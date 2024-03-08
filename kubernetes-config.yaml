@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-   name: bb-demo
+   name: bb-web
    namespace: default
 spec:
    replicas: 1
@@ -15,9 +15,8 @@ spec:
       spec:
          containers:
             - name: bb-site
-              image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/sampleapp:latest
-              imagePullPolicy: Always
-              
+              image: docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:${{ github.sha }}
+              imagePullPolicy: Always              
 ---
 apiVersion: v1
 kind: Service
@@ -25,10 +24,10 @@ metadata:
    name: bb-entrypoint
    namespace: default
 spec:
-   type: NodePort
+   type: LoadBalancer
    selector:
-      bb: web
+      app: bb-web
    ports:
-      - port: 3000
-        targetPort: 3000
-        nodePort: 30001
+      - protocol: TCP
+        port: 80
+        targetPort: 8080
