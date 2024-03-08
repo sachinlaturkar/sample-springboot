@@ -47,6 +47,12 @@ jobs:
           echo "Installing kubectl"
           sudo apt-get update -q
           sudo apt-get install -q -y kubectl
+      - name: Generate Google Cloud credentials
+        run: |
+          echo $GCP_SERVICE_KEY | base64 --decode > /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
+          env:
+          GCP_SERVICE_KEY: ${{ secrets.GCP_SERVICE_KEY }}
+
       - name: Set up Kubernetes
         run: |
           echo "Setting up Kubernetes"
@@ -62,4 +68,3 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
           GOOGLE_GHA_CREDS_PATH: /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
           CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
-
