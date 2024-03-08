@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-   name: bb-web
+   name: bb-demo
    namespace: default
 spec:
    replicas: 1
    selector:
       matchLabels:
-         bb: web
+         app: bb-web
    template:
       metadata:
          labels:
-            bb: web
+            app: bb-web
       spec:
          containers:
             - name: bb-site
               image: docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:${{ github.sha }}
-              imagePullPolicy: Always              
+              imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
@@ -30,4 +30,5 @@ spec:
    ports:
       - protocol: TCP
         port: 80
-        targetPort: 8080
+        targetPort: 8080  # Assuming your container exposes port 8080
+
