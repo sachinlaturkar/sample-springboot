@@ -47,11 +47,11 @@ jobs:
           echo "Installing kubectl"
           sudo apt-get update -q
           sudo apt-get install -q -y kubectl
-      - name: Generate Google Cloud credentials
+          
+      - name: Install Kubernetes Plugins
         run: |
-          echo $GCP_SERVICE_KEY | base64 --decode > /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
-          env:
-          GCP_SERVICE_KEY: ${{ secrets.GCP_SERVICE_KEY }}
+          echo "Installing Plugins"
+            gcloud components install gke-gcloud-auth-plugin
 
       - name: Set up Kubernetes
         run: |
@@ -59,12 +59,8 @@ jobs:
           gcloud container clusters get-credentials autopilot-cluster-1 --region=${LOCATION}
           gcloud components install kubectl
           gcloud components install gke-gcloud-auth-plugin
+          
+      - name: Deploy to Kubernetes
+        run: |
+          echo "Deploying to Kubernetes"
           kubectl apply -f kubernetes-config.yaml
-        env:
-          LOCATION: us-east4
-          CI_SERVICE_NAME: github-actions
-          SA_CI_CD_EMAIL: kubernetes-sp@gcp-demo-project-415805.iam.gserviceaccount.com
-          CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
-          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
-          GOOGLE_GHA_CREDS_PATH: /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
-          CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
