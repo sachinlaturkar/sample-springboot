@@ -47,13 +47,19 @@ jobs:
           echo "Installing kubectl"
           sudo apt-get update -q
           sudo apt-get install -q -y kubectl
-
       - name: Set up Kubernetes
         run: |
           echo "Setting up Kubernetes"
-          gcloud container clusters get-credentials autopilot-cluster-1 --region=${{ env.LOCATION }}
-
-      - name: Deploy to Kubernetes
-        run: |
-          echo "Deploying to Kubernetes"
+          gcloud container clusters get-credentials autopilot-cluster-1 --region=${LOCATION}
+          gcloud components install kubectl
+          gcloud components install gke-gcloud-auth-plugin
           kubectl apply -f kubernetes-config.yaml
+        env:
+          LOCATION: us-east4
+          CI_SERVICE_NAME: github-actions
+          SA_CI_CD_EMAIL: kubernetes-sp@gcp-demo-project-415805.iam.gserviceaccount.com
+          CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
+          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
+          GOOGLE_GHA_CREDS_PATH: /home/runner/work/sample-springboot/sample-springboot/gha-creds-d95ebe39ca29d510.json
+          CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
+
