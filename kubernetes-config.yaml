@@ -7,18 +7,16 @@ spec:
    replicas: 1
    selector:
       matchLabels:
-         app: bb-web
+         bb: web
    template:
       metadata:
          labels:
-            app: bb-web
+            bb: web
       spec:
          containers:
             - name: bb-site
-              image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/sampleapp:latest
-              imagePullPolicy: Always
-              ports:
-                - containerPort: 8080
+              image: docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:${{ github.sha }}
+              imagePullPolicy: Always              
 ---
 apiVersion: v1
 kind: Service
@@ -32,4 +30,4 @@ spec:
    ports:
       - protocol: TCP
         port: 80
-        targetPort: 8080  # Match with your containerPort
+        targetPort: 8080
