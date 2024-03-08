@@ -38,13 +38,13 @@ jobs:
         run: gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Build Docker image
-        run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/samplespringboot:${{ github.sha | lower }} .
+        run: docker build -t gcr.io/$(echo "${{ secrets.GCP_PROJECT_ID }}" | tr '[:upper:]' '[:lower:]')/samplespringboot:${{ github.sha | tr '[:upper:]' '[:lower:]' }} .
 
       - name: Configure Docker for GCR
         run: gcloud auth configure-docker -q
 
       - name: Push Docker image to GCR
-        run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/samplespringboot:${{ github.sha }}
+        run: docker push gcr.io/$(echo "${{ secrets.GCP_PROJECT_ID }}" | tr '[:upper:]' '[:lower:]')/samplespringboot:${{ github.sha | tr '[:upper:]' '[:lower:]' }}
 
       - name: Install Kubernetes tools
         run: |
