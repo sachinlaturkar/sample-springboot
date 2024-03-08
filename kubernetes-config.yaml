@@ -19,7 +19,6 @@ spec:
               imagePullPolicy: Always
               ports:
                 - containerPort: 8080  # Adjusted to 8080
-
 ---
 apiVersion: v1
 kind: Service
@@ -27,7 +26,7 @@ metadata:
    name: bb-entrypoint
    namespace: default
 spec:
-   type: LoadBalancer  # Updated to LoadBalancer
+   type: LoadBalancer
    selector:
       app: bb-web
    ports:
