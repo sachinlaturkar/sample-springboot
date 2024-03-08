@@ -15,7 +15,7 @@ spec:
       spec:
          containers:
             - name: bb-site
-              image: docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:${{ github.sha }}
+              image: docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:latest
               imagePullPolicy: Always
 ---
 apiVersion: v1
