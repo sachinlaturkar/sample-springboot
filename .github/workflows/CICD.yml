@@ -34,14 +34,10 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PAT }}
 
-      - name: Build and Push Docker image
+      - name: Build Docker image
         run: |
-          IMAGE_NAME=docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:latest
-          docker build -t $IMAGE_NAME .
-          docker push $IMAGE_NAME
-          env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-
+          IMAGE_NAME=$(echo "${{ secrets.DOCKER_USERNAME }}" | tr '[:upper:]' '[:lower:]')/sampleapp
+          docker build -t ${IMAGE_NAME}:latest .
       - name: Push Docker image to Docker Hub
         run: docker push docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:latest
 
@@ -55,7 +51,6 @@ jobs:
         run: |
           echo "Installing Plugins"
             gcloud components install gke-gcloud-auth-plugin
-
       - name: Set up Kubernetes
         run: |
           echo "Setting up Kubernetes"
