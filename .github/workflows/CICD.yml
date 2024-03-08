@@ -4,7 +4,6 @@ env:
   LOCATION: us-east4
   CI_SERVICE_NAME: github-actions
   SA_CI_CD_EMAIL: 'kubernetes-sp@gcp-demo-project-415805.iam.gserviceaccount.com'
-
 on:
   push:
     branches:
