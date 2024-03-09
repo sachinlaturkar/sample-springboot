@@ -7,16 +7,21 @@ spec:
    replicas: 1
    selector:
       matchLabels:
-         bb: web
+         app: bb-web
    template:
       metadata:
          labels:
-            bb: web
+            app: bb-web
       spec:
          containers:
             - name: bb-site
+<<<<<<< HEAD
               image: docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:${{ github.sha }}
               imagePullPolicy: Always              
+=======
+              image: docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:latest
+              imagePullPolicy: Always
+>>>>>>> b6457d17dfb14822dd6ed8a84be3a5ee697a0835
 ---
 apiVersion: v1
 kind: Service
@@ -30,4 +35,9 @@ spec:
    ports:
       - protocol: TCP
         port: 80
+<<<<<<< HEAD
         targetPort: 8080
+=======
+        targetPort: 8080  # Assuming your container exposes port 8080
+
+>>>>>>> b6457d17dfb14822dd6ed8a84be3a5ee697a0835
