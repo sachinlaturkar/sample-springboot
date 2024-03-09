@@ -7,23 +7,14 @@ env:
 on:
   push:
     branches:
-<<<<<<< HEAD
-      - main
-
-=======
       - master
->>>>>>> b6457d17dfb14822dd6ed8a84be3a5ee697a0835
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
-<<<<<<< HEAD
-
-=======
-   
+        uses: actions/checkout@v2   
       - name: 'Google auth'
         id: 'auth'
         uses: 'google-github-actions/auth@v1'
@@ -39,23 +30,15 @@ jobs:
 
       - name: Configure gcloud settings
         run: gcloud config set project ${{ secrets.GCP_PROJECT_ID }}  
->>>>>>> b6457d17dfb14822dd6ed8a84be3a5ee697a0835
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PAT }}
 
       - name: Build Docker image
         run: |
           IMAGE_NAME=$(echo "${{ secrets.DOCKER_USERNAME }}" | tr '[:upper:]' '[:lower:]')/sampleapp
-<<<<<<< HEAD
-          docker build -t ${IMAGE_NAME}:${{ github.sha }} .
-
-      - name: Push Docker image to Docker Hub
-        run: docker push ${IMAGE_NAME}:${{ github.sha }}
-=======
           docker build -t ${IMAGE_NAME}:latest .
       - name: Push Docker image to Docker Hub
         run: docker push docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:latest
->>>>>>> b6457d17dfb14822dd6ed8a84be3a5ee697a0835
 
       - name: Install Kubernetes tools
         run: |
