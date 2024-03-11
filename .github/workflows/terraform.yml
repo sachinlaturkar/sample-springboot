@@ -23,7 +23,8 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
-
+        env:
+          GCP_SA_KEY: ${{secrets.GCP_SA_KEY}}
       - name: Show Kubeconfig
         run: echo "${{ steps.apply.outputs.kubeconfig }}" > kubeconfig.yaml
         id: apply
