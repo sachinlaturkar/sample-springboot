@@ -15,8 +15,10 @@ spec:
       spec:
          containers:
             - name: bb-site
+
               image: docker.io/${{ secrets.DOCKER_USERNAME }}/sampleapp:latest
               imagePullPolicy: Always
+
 ---
 apiVersion: v1
 kind: Service
@@ -31,4 +33,5 @@ spec:
       - protocol: TCP
         port: 80
         targetPort: 8080  # Assuming your container exposes port 8080
+
 
