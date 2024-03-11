@@ -1,7 +1,7 @@
 provider "google" {
-  credentials = file("$GCP_SA_KEY")
-  project = "$GCP_PROJECT_ID"
-  region = "us-central1"
+  credentials = jsondecode(base64decode(var.gcp_sa_key))
+  project = "zb-poc"
+  region = "us-east1"
 }
 
 resource "google_storage_bucket" "terraform_state" {
@@ -11,7 +11,7 @@ resource "google_storage_bucket" "terraform_state" {
 
 resource "google_container_cluster" "my_cluster" {
   name = "zb-gke"
-  location = "us-central1"
+  location = "us-east1"
 
   initial_node_count = 2
 
